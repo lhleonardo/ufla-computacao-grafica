@@ -1,0 +1,25 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+# Multi/Sub  (2) to come 
+#
+newmtl madeira3
+Ka  0.956863 0.882353 0.768628
+Kd  0.956863 0.882353 0.768628
+Ks  0.900000 0.900000 0.900000
+d  1.000000
+Ns  0.000000
+illum 2
+map_Kd woodtabl.png
+#
+newmtl madeira4
+Ka  0.313726 0.247059 0.145098
+Kd  0.313726 0.247059 0.145098
+Ks  0.900000 0.900000 0.900000
+d  1.000000
+Ns  0.000000
+illum 2
+map_Kd wood2.jpg
+#
+# Multi/Sub  done 
+#
+# EOF
