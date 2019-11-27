@@ -42,7 +42,7 @@ clean:
 	rm -f *.o *~ raster
 
 raster: $(OBJECTS)
-	$(CXX) $(OBJECTS) $(WX_LDFLAGS) -o $@
+	$(CXX) $(OBJECTS) $(WX_LDFLAGS) -o $@.out
 
 zbuffer.o: zbuffer.cpp zbuffer.h
 	$(CXX) -c $< $(CPPFLAGS) $(CXXFLAGS) $(CPPDEPS) -o $@

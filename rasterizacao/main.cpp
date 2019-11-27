@@ -127,7 +127,7 @@ using namespace std;
 // frame constructor
 MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
        : wxFrame((wxFrame *)NULL, wxID_ANY, title, pos, size, wxDEFAULT_FRAME_STYLE),
-         mDrawMode(LINES), mContadorCliques(0)
+         mDrawMode(CIRCLES), mContadorCliques(0)
 {
     // set the frame icon
     SetIcon(wxICON(mondrian));
