@@ -197,36 +197,28 @@ void BigPixelCanvas::DrawCircle(wxPoint center, int radius)
     wxClientDC dc(this);
     PrepareDC(dc);
     center = ConvertDeviceToLogical(center);
-    center.x = 2;
-    center.y = 2;
     DrawCircle(center, radius/mPixelSize, dc);
 }
 
 void BigPixelCanvas::DrawCircle(const wxPoint& center, int radius, wxDC& dc) {
 
-    int x = center.x;
-    int y = center.y + radius;
+    int x = 0;
+    int y = radius;
 
-    cout << "Centro (" << center.x << ", " << (center.y + radius) << ")" << endl;
-    cout << "raio: " << radius << endl;
     // imprime o primeiro pixel 
-    DrawPixel(x, y, dc);
-    DrawPixel(y, x, dc);
-    DrawPixel(-x, y, dc);
-    DrawPixel(-y, x, dc);
-    DrawPixel(-y, -x, dc);
-    DrawPixel(-x, -y, dc);
-    DrawPixel(x, -y, dc);
-    DrawPixel(y, -x, dc);
+    DrawPixel(center.x + x, center.y + y, dc);
+    DrawPixel(center.x + y, center.y + x, dc);
+    DrawPixel(center.x + y, center.y - x, dc);
+    DrawPixel(center.x + x, center.y - y, dc);
+    DrawPixel(center.x - x, center.y - y, dc);
+    DrawPixel(center.x - y, center.y - x, dc);
+    DrawPixel(center.x - x, center.y + x, dc);
+    DrawPixel(center.x - x, center.y + y, dc);
 
     int pontoMedio = x*x + y*y - radius*radius + 2*x - y + 5/4;
-    // int incLado = 2*x + 3;
-    // int incAbaixo = 2*x - 2*y + 5;
-
-    cout << "Ponto médio: " << pontoMedio << endl;
 
     while (x <= y) {
-        if (pontoMedio < 5/4) {
+        if (pontoMedio < 0) {
             pontoMedio += 2*x + 3;       // incremento para o ponto Pe
         } else {
             pontoMedio += 2*x - 2*y + 5; // incremento para o ponto Pse
@@ -235,16 +227,15 @@ void BigPixelCanvas::DrawCircle(const wxPoint& center, int radius, wxDC& dc) {
         x++;
 
         // imprime o pixel calculado por sua simetria
-        DrawPixel(x, y, dc);
-        DrawPixel(y, x, dc);
-        DrawPixel(-x, y, dc);
-        DrawPixel(-y, x, dc);
-        DrawPixel(-y, -x, dc);
-        DrawPixel(-x, -y, dc);
-        DrawPixel(x, -y, dc);
-        DrawPixel(y, -x, dc);
+        DrawPixel(center.x + x, center.y + y, dc);
+        DrawPixel(center.x + y, center.y + x, dc);
+        DrawPixel(center.x + y, center.y - x, dc);
+        DrawPixel(center.x + x, center.y - y, dc);
+        DrawPixel(center.x - x, center.y - y, dc);
+        DrawPixel(center.x - y, center.y - x, dc);
+        DrawPixel(center.x - x, center.y + x, dc);
+        DrawPixel(center.x - x, center.y + y, dc);
     }
-
 }
 
 void BigPixelCanvas::DesenharTriangulo2D(const Triang2D& triangulo) {
