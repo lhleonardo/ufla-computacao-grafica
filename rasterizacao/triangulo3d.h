@@ -23,7 +23,7 @@ class Triangulo3D
 
         // Cada vez que for ativado, este metodo retorna o proximo intervalo para ser
         // desenhado.
-#warning Triangulo3D::AtualizarIntervaloHorizontal não foi completamente implementado (necessário para o z-buffer, procure por FixMe, retire os pragmas quando for implementar).
+//~ #warning Triangulo3D::AtualizarIntervaloHorizontal não foi completamente implementado (necessário para o z-buffer, procure por FixMe, retire os pragmas quando for implementar).
         bool AtualizarIntervaloHorizontal(IntervaloHorizontal<Cor,Coord>* ptIntervalo) const {
             static bool naoInicializado = true;
             static bool primeiraParte = true; // primeira ou segunda parte?
@@ -95,6 +95,15 @@ class Triangulo3D
                     }
                 }
             }
+            ptIntervalo->mXMax = xMax;
+            ptIntervalo->mXMin = xMin;
+            ptIntervalo->mZ = z;
+            ptIntervalo->mY = y;
+
+            xMax += incrementoXMax;
+            xMin += incrementoXMin;
+
+            y++;
             // atualizar mY, mXMin, mXMax e mZ no intervalo
             // FixMe
             // atualizar y, xMin, xMax e z locais (para proxima ativacao da funcao)

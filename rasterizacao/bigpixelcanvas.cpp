@@ -100,12 +100,12 @@ void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
     int incrementX = 1, incrementY = 1;
     int deltaX = p1.x - p0.x, deltaY = p1.y - p0.y;
     int limiteX = p1.x, limiteY = p1.y;
-    int x, y;
+    int x = p0.x, y = p0.y;
 
     if (p0.x > p1.x) {  // quadrante 2 ou 3
         deltaX = -deltaX;
 
-        if (p0.y > p1.y) {      // quadrante 3
+        if (p0.y > p1.y) { // quadrante 3, os dois octantes possuem semelhança
             deltaY = -deltaY;
 
             x = p1.x;
@@ -113,21 +113,14 @@ void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
             
             y = p1.y;
             limiteY = p0.y;
-        } else {            // quadrante 2
-            if (deltaX > deltaY) {
+        } else { // quadrante 2, situação diferente para ambos os quadrantes
+            if (deltaX > deltaY) { // primeiro octante invertido
                 x= p1.x;
                 y = p1.y;
 
                 limiteX = p0.x;
-
-                incrementX = 1;
                 incrementY = -1;
-            } else {
-                x = p0.x;
-                y = p0.y;
-                limiteY = p1.y;
-
-                incrementY = 1;
+            } else { // segundo octante invertido. Desenho normal decrementando X
                 incrementX = -1;
             }
         }
@@ -139,21 +132,10 @@ void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
 
             limiteY = p0.y;
 
-            incrementY = 1;
             incrementX = -1;
         } else {                // octante 8
-            x = p0.x;
-            y = p0.y;
-
-            limiteX = p1.x;
-            
             incrementY = -1;
-            incrementX = 1;
-
         }
-    } else { // quadrante 4
-        x = p0.x;
-        y = p0.y;
     }
 
     DrawPixel(x, y, dc);
@@ -161,9 +143,9 @@ void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
     int pontoMedio, incrementoNorte, incrementoNordeste;
 
     if (deltaX > deltaY) {
-        pontoMedio = 2*deltaY - deltaX;
-        incrementoNorte = 2*deltaY;
-        incrementoNordeste = 2* (deltaY - deltaX);
+        pontoMedio = (deltaY<<1) - deltaX;
+        incrementoNorte = deltaY << 1;
+        incrementoNordeste = (deltaY - deltaX) << 1;
 
         while (x < limiteX) {
             if (pontoMedio <= 0) {
@@ -176,9 +158,9 @@ void BigPixelCanvas::DrawLine(const wxPoint& p0, const wxPoint& p1, wxDC& dc)
             DrawPixel(x, y, dc);
         }
     } else {
-        pontoMedio = 2* deltaX - deltaY;
-        incrementoNorte = 2*deltaX; 
-        incrementoNordeste = 2* (deltaX - deltaY);
+        pontoMedio = (deltaX << 1) - deltaY;
+        incrementoNorte = deltaX << 1; 
+        incrementoNordeste = (deltaX - deltaY) << 1;
         
         while (y < limiteY) {
             if (pontoMedio <= 0) {
@@ -215,13 +197,13 @@ void BigPixelCanvas::DrawCircle(const wxPoint& center, int radius, wxDC& dc) {
     DrawPixel(center.x - x, center.y + x, dc);
     DrawPixel(center.x - x, center.y + y, dc);
 
-    int pontoMedio = x*x + y*y - radius*radius + 2*x - y + 5/4;
+    int pontoMedio = 5/4 - radius;
 
     while (x <= y) {
         if (pontoMedio < 0) {
-            pontoMedio += 2*x + 3;       // incremento para o ponto Pe
+            pontoMedio += (x << 1) + 3;       // incremento para o ponto Pe
         } else {
-            pontoMedio += 2*x - 2*y + 5; // incremento para o ponto Pse
+            pontoMedio += (x << 1) - (y << 1) + 5; // incremento para o ponto Pse
             y--;
         }
         x++;
@@ -245,6 +227,11 @@ void BigPixelCanvas::DesenharTriangulo2D(const Triang2D& triangulo) {
 }
 
 void BigPixelCanvas::DesenharTriangulo2D(const Triang2D& triangulo, wxDC& dc) {
+    cout << "O triangulo está nos pontos: " << endl;
+
+    cout << "\tp1 (" << triangulo.P1().mX << ", " << triangulo.P1().mY << ")" << endl;
+    cout << "\tp2 (" << triangulo.P2().mX << ", " << triangulo.P2().mY << ")" << endl;
+    cout << "\tp3 (" << triangulo.P3().mX << ", " << triangulo.P3().mY << ")" << endl;
     Interv2D intervalo;
     while (triangulo.AtualizarIntervaloHorizontal(&intervalo))
         if (intervalo.Valido())
